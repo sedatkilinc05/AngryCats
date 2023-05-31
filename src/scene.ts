@@ -14,9 +14,9 @@ function makeScene(): Scene {
 }
 
 function createCamera(scene: Scene): void {
-    const alpha: number = Math.PI / 4
-    const beta: number = Math.PI / 3
-    const radius: number = 8
+    const alpha: number = Math.PI / 2
+    const beta: number = Math.PI
+    const radius: number = 28
     const target: Vector3 = new Vector3(0, 0, 0)
 
     new ArcRotateCamera(

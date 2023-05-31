@@ -3,7 +3,7 @@ import { scene } from "./scene"
 
 function makeGround(size: number = 4): Mesh {
     const ground = CreateGround("Ground",
-        { width: size, height: size },
+        { width: size, height: 2 * size },
         scene
     )
     ground.physicsImpostor = new PhysicsImpostor(

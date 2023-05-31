@@ -12,6 +12,9 @@ body {
 
 h1 {
     position: absolute;
-    color: rgb(161, 215, 161);
+    color: rgb(109, 1, 1);
+    background-color: rgba(86, 86, 236, 0.214);
     text-align: center;
+    padding: 0.25em 1em;
+    border-radius: 50%;
 }
