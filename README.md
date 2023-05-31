@@ -1,2 +1,5 @@
-# BabylonJS-AmmoJS-Parcel-Project-Template
-Boilerplate Code BabylonJS &amp; AmmoJS with Parcel as bundler
+# Angry Cats
+
+Goal #1: Evaluating the possibilities of BabylonJS & AmmoJS
+
+Goal #2: Improving the boilerplate project template
