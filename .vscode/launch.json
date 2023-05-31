@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch via NPM",
+            "name": "NPM start",
             "request": "launch",
             "runtimeArgs": [
                 "run-script",
@@ -16,28 +16,6 @@
                 "<node_internals>/**"
             ],
             "type": "node"
-        },
-        {
-            "name": "Host via NPM",
-            "request": "launch",
-            "runtimeArgs": [
-                "run-script",
-                "host"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Programm starten",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${file}"
         }
     ]
 }
