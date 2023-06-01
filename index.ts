@@ -1,15 +1,18 @@
 import 'regenerator-runtime/runtime'
-import { scene, engine, camera } from './src/scene'
+import { scene, engine, camera, createUniversalCamera } from './src/scene'
 import Ammo from "ammojs-typed";
-import { AmmoJSPlugin, Mesh, Vector3 } from 'babylonjs';
+import { AmmoJSPlugin, Mesh, PhysicsImpostor, Scene, UniversalCamera, Vector3 } from 'babylonjs';
 import { makeGround } from "./src/ground";
 
 import { makeBox, makeCube, makeArc } from "./src/cube";
 
 import { addDebugLayer } from "./src/debuglayer";
+import { canvas } from './src/domitems';
+import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
 
 let ground: Mesh
-
+let universalCamera: UniversalCamera
+let bullet: Mesh
 async function main(): Promise<void> {
     console.log('Hello from Babylons>JS')
 
@@ -22,10 +25,10 @@ async function main(): Promise<void> {
     ground = makeGround(28, 4)
     ground.receiveShadows = true
 
-    makeCube()
-    makeCube(-4, 2, -44, 0.25)
-    makeCube(-2, 2, -32, 0.25)
-    makeCube(-1, 2, -41, 0.25)
+    /*  makeCube()
+     makeCube(-4, 2, -44, 0.25)
+     makeCube(-2, 2, -32, 0.25)
+     makeCube(-1, 2, -41, 0.25) */
     /* makeCube(4, 2, 4, 0.25)
     makeCube(2, 2, 2, 0.25)
     makeCube(1, 2, 1, 0.25)
@@ -35,12 +38,12 @@ async function main(): Promise<void> {
     makeBox(-2, 12, 2)
     makeBox(-1, 12, 1)
     makeBox() */
-    makeBox(0.5, 12, -20, 13, .3, 0.1)
-    makeBox(3, -40, -3)
-    makeBox(2, -40, -2)
-    makeBox(1, -40, -1)
-
-    makeBox(0, 13, -23, 3, 3, 0.1)
+    /*  makeBox(0.5, 12, -20, 13, .3, 0.1)
+     makeBox(3, -40, -3)
+     makeBox(2, -40, -2)
+     makeBox(1, -40, -1)
+ 
+     makeBox(0, 13, -23, 3, 3, 0.1) */
 
     // 4th Row
     makeArc(-9, -50, 5, 5)
@@ -72,9 +75,44 @@ async function main(): Promise<void> {
 
 
 
-    let gun: Mesh = makeBox(0, 3, 43, 1, 1, 5)
+    const gun: Mesh = makeBox(0, 3, 43, 1, 1, 5)
     gun.physicsImpostor?.setMass(0)
+    universalCamera = createUniversalCamera(0, 5, 50, new Vector3(0, 6, -40))
 
+    bullet = makeCube(0, 4, 42, 1, 0.9)
+    /* 
+    let btn1 = Button.CreateSimpleButton("", "Button one");
+    btn1.width = "100px";
+    btn1.height = "30px"
+    btn1.background = "white"
+    btn1.verticalAlignment = 1;
+    btn1.horizontalAlignment = 0;
+    btn1.left = "15px";
+    btn1.top = "-15px";
+
+    let btn2 = Button.CreateSimpleButton("", "Button two");
+    btn2.width = "100px";
+    btn2.height = "30px"
+    btn2.background = "white"
+    btn2.verticalAlignment = 1;
+    btn2.horizontalAlignment = 0;
+    btn2.left = "130px"
+    btn2.top = "-15px";
+
+    btn1.onPointerClickObservable.add(() => {
+        camera.detachControl()
+        scene.activeCamera = universalCamera
+    })
+
+    btn2.onPointerClickObservable.add(() => {
+        universalCamera.detachControl()
+        scene.activeCamera = camera
+
+    })
+
+    advancedTexture.addControl(btn1);
+    advancedTexture.addControl(btn2);
+ */
     engine.runRenderLoop(() => {
         scene.render()
     })
@@ -83,6 +121,28 @@ async function main(): Promise<void> {
     window.addEventListener("resize", function () {
         engine.resize();
     })
+    window.addEventListener("keyup", function (ev: KeyboardEvent) {
+        console.log(ev)
+        if (ev.code == 'KeyU') {
+            camera.detachControl()
+            scene.activeCamera = universalCamera
+            universalCamera.attachControl(canvas, true)
+        } else if (ev.code == 'KeyC') {
+            universalCamera.detachControl()
+            scene.activeCamera = camera
+            camera.attachControl(canvas, true)
+        } else if (ev.code == 'KeyS') {
+            physics.applyForce(bullet.physicsImpostor!, new Vector3(0, 1100, -1024), bullet.position)
+            this.setTimeout(() => {
+                bullet = makeCube(0, 4, 42, 1, 0.9)
+            }, 1000)
+
+        }
+    })
+}
+
+function addButtons(scene: Scene) {
+
 }
 
 main()

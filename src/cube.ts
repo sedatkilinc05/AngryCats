@@ -1,10 +1,9 @@
 import { Color3, Mesh, MeshBuilder, PhysicsImpostor, StandardMaterial, Vector3 } from "babylonjs";
 import { scene, shadowGenerator } from "./scene"
-import { GenerateBase64StringFromTextureAsync } from "babylonjs/Misc/index";
 
 let counter = 0
 
-function makeCube(x: number = 0, y: number = 1, z: number = 0, size: number = 0.5): Mesh {
+function makeCube(x: number = 0, y: number = 1, z: number = 0, size: number = 0.5, restitution: number = 0.1): Mesh {
     counter++
     const cube: Mesh = MeshBuilder.CreateBox("Cube" + counter, { size: size })
     cube.position = new Vector3(x, y, z)
@@ -18,7 +17,7 @@ function makeCube(x: number = 0, y: number = 1, z: number = 0, size: number = 0.
     cube.physicsImpostor = new PhysicsImpostor(
         cube,
         PhysicsImpostor.BoxImpostor,
-        { mass: 1, restitution: 0.9 },
+        { mass: 1, restitution: restitution },
         scene
     )
 

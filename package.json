@@ -3,16 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "clean": "rm -rf ./dist",
     "start": "parcel index.html",
     "serve": "parcel serve index.html",
     "watch": "parcel watch index.html",
     "build": "NODE_ENV=production parcel build index.html --no-scope-hoist --public-url '.' ",
+    "build-local": "NODE_ENV=production parcel build index.html --no-scope-hoist --public-url '.' --dist-dir 'public' ",
+    "serve-local": "http-server -a 0.0.0.0 -U --log-ip --no-dotfiles --cors node --trace-deprecation -c-1 public/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babylonjs/gui": "^6.6.0",
     "ammojs-typed": "^1.0.6",
     "babylonjs": "^6.5.0",
     "regenerator-runtime": "^0.13.11"
