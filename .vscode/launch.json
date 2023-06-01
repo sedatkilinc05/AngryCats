@@ -16,6 +16,45 @@
                 "<node_internals>/**"
             ],
             "type": "node"
+        },
+        {
+            "name": "NPM serve",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "serve"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "NPM watch",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "watch"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "NPM build",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "build"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
         }
     ]
 }
