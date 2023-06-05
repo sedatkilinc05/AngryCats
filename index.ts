@@ -172,7 +172,7 @@ async function main(): Promise<void> {
             universalCamera.detachControl()
             scene.activeCamera = camera
             camera.attachControl(canvas, true)
-        } else if (ev.code == 'KeyS') {
+        } else if (ev.code == 'Space') {
             physics.applyForce(bullet.physicsImpostor!, new Vector3(0, 1100, -1024), bullet.position)
             this.setTimeout(() => {
                 bullet = makeCube(0, 4, 42, 1, 0.9)
