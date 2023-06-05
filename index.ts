@@ -1,17 +1,16 @@
 import 'regenerator-runtime/runtime'
 import { scene, engine, camera, createUniversalCamera, shadowGenerator } from './src/scene'
-import Ammo from "ammojs-typed";
-import { AmmoJSPlugin, Mesh, PhysicsImpostor, Scene, SceneLoader, UniversalCamera, Vector3 } from 'babylonjs';
-import { makeGround } from "./src/ground";
+import Ammo from "ammojs-typed"
+import { AmmoJSPlugin, Mesh, PhysicsImpostor, Scene, SceneLoader, Space, UniversalCamera, Vector2, Vector3 } from 'babylonjs'
+import { makeGround } from "./src/ground"
 
-import { makeBox, makeCube, makeArc } from "./src/cube";
+import { makeBox, makeCube, makeArc, makeBullet } from "./src/cube"
 
-import { addDebugLayer } from "./src/debuglayer";
-import { canvas } from './src/domitems';
+import { addDebugLayer } from "./src/debuglayer"
+import { canvas } from './src/domitems'
 
-import urlDude from "./src/models/Dude/Dude.babylon"
-// import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
-import { getDudeByName, makeDude } from './src/dude';
+// import { AdvancedDynamicTexture, Button } from "@babylonjs/gui"
+import { getDudeByName, getDudeNeckBoneByName, makeDude } from './src/dude'
 
 let ground: Mesh
 let universalCamera: UniversalCamera
@@ -20,7 +19,7 @@ let bullet: Mesh
 async function main(): Promise<void> {
     console.log('Hello from Babylons>JS')
 
-    addDebugLayer();
+    addDebugLayer()
 
     const ammo = await Ammo()
     const physics: AmmoJSPlugin = new AmmoJSPlugin(true, ammo)
@@ -76,18 +75,23 @@ async function main(): Promise<void> {
     makeArc(-2, -20, 5, 5)
 
     makeArc(4, -20, 5, 5)
-    makeDude('JoeT', 0, 6, -20, 0.1, 0.1)
 
     let x = 0
     let y = 2
     let z = -3
 
-    let scale = 0.3
+    let scale = 0.05
 
     let restitution = 0.1
-    makeDude('JoeL', 7, 0, -3, 0.1, 0.1)
-    makeDude('Joe', 0, 0, -3, 0.1, 0.1)
-    makeDude('JoeR', -7, 0, -3, 0.1, 0.1)
+
+    makeDude('JoeT', 0, 6, -20, scale, restitution)
+    makeDude('JoeL30', 7, 6, -30, scale, restitution)
+    makeDude('JoeM30', 0, 6, -30, scale, restitution)
+    makeDude('JoeR30', -7, 6, -30, scale, restitution)
+    makeDude('JoeL40', 7, 6, -40, scale, restitution)
+    makeDude('JoeM40', 0, 6, -40, scale, restitution)
+    makeDude('JoeR40', -7, 6, -40, scale, restitution)
+    makeDude('Joe', 0, 5, 13, scale, restitution)
 
     let dudeJoe = getDudeByName('Joe')
     console.log('Here  is Joe', dudeJoe)
@@ -116,25 +120,25 @@ async function main(): Promise<void> {
     gun.physicsImpostor?.setMass(0)
     universalCamera = createUniversalCamera(0, 5, 50, new Vector3(0, 6, -40))
 
-    bullet = makeCube(0, 4, 42, 1, 0.9)
+    bullet = makeBullet(0, 4, 42, 1, 0.9)
     /* 
-    let btn1 = Button.CreateSimpleButton("", "Button one");
-    btn1.width = "100px";
+    let btn1 = Button.CreateSimpleButton("", "Button one")
+    btn1.width = "100px"
     btn1.height = "30px"
     btn1.background = "white"
-    btn1.verticalAlignment = 1;
-    btn1.horizontalAlignment = 0;
-    btn1.left = "15px";
-    btn1.top = "-15px";
+    btn1.verticalAlignment = 1
+    btn1.horizontalAlignment = 0
+    btn1.left = "15px"
+    btn1.top = "-15px"
 
-    let btn2 = Button.CreateSimpleButton("", "Button two");
-    btn2.width = "100px";
+    let btn2 = Button.CreateSimpleButton("", "Button two")
+    btn2.width = "100px"
     btn2.height = "30px"
     btn2.background = "white"
-    btn2.verticalAlignment = 1;
-    btn2.horizontalAlignment = 0;
+    btn2.verticalAlignment = 1
+    btn2.horizontalAlignment = 0
     btn2.left = "130px"
-    btn2.top = "-15px";
+    btn2.top = "-15px"
 
     btn1.onPointerClickObservable.add(() => {
         camera.detachControl()
@@ -147,12 +151,12 @@ async function main(): Promise<void> {
 
     })
 
-    advancedTexture.addControl(btn1);
-    advancedTexture.addControl(btn2);
+    advancedTexture.addControl(btn1)
+    advancedTexture.addControl(btn2)
  */
     engine.runRenderLoop(() => {
         scene.render()
-        let dude = getDudeByName('Joe')
+        const dude = getDudeByName('Joe')
         if (dude != undefined) {
             dude.rotation.y += deg2rad(5)
         }
@@ -160,8 +164,9 @@ async function main(): Promise<void> {
 
     // Watch for browser/canvas resize events
     window.addEventListener("resize", function () {
-        engine.resize();
+        engine.resize()
     }, false)
+
     window.addEventListener("keyup", function (ev: KeyboardEvent) {
         console.log(ev)
         if (ev.code == 'KeyU') {
@@ -173,9 +178,9 @@ async function main(): Promise<void> {
             scene.activeCamera = camera
             camera.attachControl(canvas, true)
         } else if (ev.code == 'Space') {
-            physics.applyForce(bullet.physicsImpostor!, new Vector3(0, 1100, -1024), bullet.position)
+            physics.applyForce(bullet.physicsImpostor!, new Vector3(0, 1048, -800), bullet.position)
             this.setTimeout(() => {
-                bullet = makeCube(0, 4, 42, 1, 0.9)
+                bullet = makeBullet(0, 4, 42, 0.5, 0.9) // makeBullet(0, 4, 42, 1, 0.9)
             }, 1000)
 
         }
@@ -185,5 +190,77 @@ async function main(): Promise<void> {
 function deg2rad(deg: number): number {
     return Math.PI * deg / 180
 }
+
+interface Rotation {
+    x: number
+    y: number
+    z: number
+}
+
+interface Position {
+    x: number
+    y: number
+}
+
+function neckControl(position: Vector3) {
+
+
+    const neckBone = getDudeNeckBoneByName('JoeR')
+    scene.registerBeforeRender(function () {
+
+        neckBone.lookAt(position)
+        // neckBone.rotate(Vector3.Lerp() rotation, Space.LOCAL);
+    })
+}
+// The given rotation object gets updated while (mousedown & mousemove)
+function attachRotationControl(scene: Scene, targetRotation: Rotation) {
+    let startingPosition: Position
+    let startingRotation: Rotation
+
+    // Event handler
+    scene.onPointerObservable.add(function (pointerInfo) {
+        switch (pointerInfo.type) {
+            case BABYLON.PointerEventTypes.POINTERDOWN:
+                pointerDown();
+                break;
+            case BABYLON.PointerEventTypes.POINTERMOVE:
+                pointerMove();
+                break;
+            case BABYLON.PointerEventTypes.POINTERUP:
+                pointerUp();
+                break;
+        }
+    });
+
+    function pointerDown() {
+        startingPosition = getCurrentPosition();
+        startingRotation = JSON.parse(JSON.stringify(targetRotation));
+    }
+    function pointerMove() {
+        if (startingPosition) {
+            let currentPosition = getCurrentPosition();
+            let diff = getDiff(currentPosition);
+            updateRotation(diff);
+        }
+    }
+    function pointerUp() {
+        startingPosition = { x: -1, y: -1 }
+        startingRotation = { x: 0, y: 0, z: 0 }
+    }
+    function getCurrentPosition(): Position {
+        return { x: scene.pointerX, y: scene.pointerY };
+    }
+    function getDiff(currentPosition: Position): Position {
+        return { x: currentPosition.x - startingPosition.x, y: currentPosition.y - startingPosition.y };
+    }
+    function updateRotation(diff: Position) {
+        let coeff = 1 / 200;
+        // x diff -> y rotation, y diff -> x rotation
+        targetRotation.x = startingRotation.x + coeff * diff.y;
+        targetRotation.y = startingRotation.y + coeff * diff.x;
+        targetRotation.z = 0;
+    }
+}
+
 
 main()

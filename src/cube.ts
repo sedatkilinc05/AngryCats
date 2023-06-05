@@ -58,4 +58,33 @@ function makeArc(x: number = -10, z: number = -6, height: number = 5, width: num
     makeBox(x + width / 2 - 0.5, height, z, width, 1, 1)
 }
 
-export { makeCube, makeBox, makeArc }
+const arrBullets: string[] = []
+
+function makeBullet(x: number = 0, y: number = 1, z: number = 0, radius: number = 0.5, restitution: number = 0.1): Mesh {
+    counter++
+    let szName = "Bullet" + counter
+    const sphereBullet = MeshBuilder.CreateSphere(szName, { diameter: 2 * radius }, scene)
+    sphereBullet.position = new Vector3(x, y, z)
+    const tmpMaterial = new StandardMaterial("SphereMaterial" + counter, scene)
+    tmpMaterial.diffuseColor = new Color3(Math.random(), Math.random(), Math.random())
+    sphereBullet.material = tmpMaterial
+
+    shadowGenerator.addShadowCaster(sphereBullet)
+
+    sphereBullet.physicsImpostor = new PhysicsImpostor(
+        sphereBullet,
+        PhysicsImpostor.SphereImpostor,
+        { mass: 1, restitution: restitution },
+        scene
+    )
+
+    arrBullets.push(szName)
+    return sphereBullet
+}
+
+function getBullet(): Mesh {
+    let lastBullet = arrBullets[arrBullets.length - 1]
+    return <Mesh>scene.getMeshByName(lastBullet)
+}
+
+export { makeCube, makeBox, makeArc, makeBullet, getBullet }
