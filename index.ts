@@ -1,18 +1,22 @@
 import 'regenerator-runtime/runtime'
-import { scene, engine, camera, createUniversalCamera } from './src/scene'
+import { scene, engine, camera, createUniversalCamera, shadowGenerator } from './src/scene'
 import Ammo from "ammojs-typed";
-import { AmmoJSPlugin, Mesh, PhysicsImpostor, Scene, UniversalCamera, Vector3 } from 'babylonjs';
+import { AmmoJSPlugin, Mesh, PhysicsImpostor, Scene, SceneLoader, UniversalCamera, Vector3 } from 'babylonjs';
 import { makeGround } from "./src/ground";
 
 import { makeBox, makeCube, makeArc } from "./src/cube";
 
 import { addDebugLayer } from "./src/debuglayer";
 import { canvas } from './src/domitems';
-import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
+
+import urlDude from "./src/models/Dude/Dude.babylon"
+// import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
+import { getDudeByName, makeDude } from './src/dude';
 
 let ground: Mesh
 let universalCamera: UniversalCamera
 let bullet: Mesh
+
 async function main(): Promise<void> {
     console.log('Hello from Babylons>JS')
 
@@ -72,9 +76,42 @@ async function main(): Promise<void> {
     makeArc(-2, -20, 5, 5)
 
     makeArc(4, -20, 5, 5)
+    makeDude('JoeT', 0, 6, -20, 0.1, 0.1)
 
+    let x = 0
+    let y = 2
+    let z = -3
 
+    let scale = 0.3
 
+    let restitution = 0.1
+    makeDude('JoeL', 7, 0, -3, 0.1, 0.1)
+    makeDude('Joe', 0, 0, -3, 0.1, 0.1)
+    makeDude('JoeR', -7, 0, -3, 0.1, 0.1)
+
+    let dudeJoe = getDudeByName('Joe')
+    console.log('Here  is Joe', dudeJoe)
+    /* 
+    SceneLoader.ImportMesh("", urlDude, "", scene,
+        function (meshes, particleSystems, skeletons) {
+            let skeleton = skeletons[0]
+            let dude = <Mesh>meshes[0]
+            // dude.physicsImpostor = new PhysicsImpostor(
+            //     dude,
+            //     PhysicsImpostor.MeshImpostor,
+            //     { mass: 1, restitution: restitution },
+            //     scene
+            // )
+            console.log('meshes', meshes)
+            dude.scaling = new Vector3(scale, scale, scale)
+            dude.position = new Vector3(x, y, z)
+            // mesh.rotation.y += Math.PI
+
+            shadowGenerator.addShadowCaster(dude)
+            console.log('Dude', dude)
+        }
+    )
+ */
     const gun: Mesh = makeBox(0, 3, 43, 1, 1, 5)
     gun.physicsImpostor?.setMass(0)
     universalCamera = createUniversalCamera(0, 5, 50, new Vector3(0, 6, -40))
@@ -115,12 +152,16 @@ async function main(): Promise<void> {
  */
     engine.runRenderLoop(() => {
         scene.render()
+        let dude = getDudeByName('Joe')
+        if (dude != undefined) {
+            dude.rotation.y += deg2rad(5)
+        }
     })
 
     // Watch for browser/canvas resize events
     window.addEventListener("resize", function () {
         engine.resize();
-    })
+    }, false)
     window.addEventListener("keyup", function (ev: KeyboardEvent) {
         console.log(ev)
         if (ev.code == 'KeyU') {
@@ -138,13 +179,11 @@ async function main(): Promise<void> {
             }, 1000)
 
         }
-    })
+    }, false)
 }
 
-function addButtons(scene: Scene) {
-
+function deg2rad(deg: number): number {
+    return Math.PI * deg / 180
 }
 
 main()
-
-

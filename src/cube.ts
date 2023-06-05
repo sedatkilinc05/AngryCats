@@ -1,4 +1,4 @@
-import { Color3, Mesh, MeshBuilder, PhysicsImpostor, StandardMaterial, Vector3 } from "babylonjs";
+import { Color3, Mesh, MeshBuilder, PhysicsImpostor, StandardMaterial, Vector3 } from "babylonjs"
 import { scene, shadowGenerator } from "./scene"
 
 let counter = 0
@@ -45,23 +45,17 @@ function makeBox(x: number = 0, y: number = 1, z: number = 0, width: number = 0.
 }
 
 function makeArc(x: number = -10, z: number = -6, height: number = 5, width: number = 21) {
-    // 3nd Arc
-    // Column left
-    makeCube(x, 0, z, 1)
-    makeCube(x, 1, z, 1)
-    makeCube(x, 2, z, 1)
-    makeCube(x, 3, z, 1)
-    makeCube(x, 4, z, 1)
 
-    // Column right
-    makeCube(x + width - 1, 0, z, 1)
-    makeCube(x + width - 1, 1, z, 1)
-    makeCube(x + width - 1, 2, z, 1)
-    makeCube(x + width - 1, 3, z, 1)
-    makeCube(x + width - 1, 4, z, 1)
 
-    // horizontal
-    makeBox(x + width / 2 - 0.5, 5, z, width, 1, 1)
+    for (let y = 0;y < height;y++) {
+        // Column left
+        makeCube(x, y, z, 1)
+        // Column right
+        makeCube(x + width - 1, y, z, 1)
+    }
+
+    // horizontal crossbeam
+    makeBox(x + width / 2 - 0.5, height, z, width, 1, 1)
 }
 
 export { makeCube, makeBox, makeArc }

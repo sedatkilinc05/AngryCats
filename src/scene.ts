@@ -1,13 +1,30 @@
-import { ArcRotateCamera, Color4, Curve3, DeepImmutable, DirectionalLight, Engine, PointLight, Scene, ShadowGenerator, UniversalCamera, Vector3 } from "babylonjs"
+import { ArcRotateCamera, Color4, Curve3, DirectionalLight, Engine, PointLight, Scene, ShadowGenerator, UniversalCamera, Vector3 } from "babylonjs"
 import { canvas } from "./domitems"
+// import urlDude from "./models/Dude/Dude.babylon"
 
 const engine = new Engine(canvas, true)
 const scene = makeScene()
 const camera = createCamera(scene)
 // const camera = createUniversalCamera(0, 0, 3, new Vector3(0, 6, -40))
 const light = createLight(scene)
-const shadowGenerator = new ShadowGenerator(1024, light);
+const shadowGenerator = new ShadowGenerator(1024, light)
 
+/* SceneLoader.ImportMesh("", urlDude, "", scene,
+    function (meshes, particleSystems, skeletons) {
+        let skeleton = skeletons[0]
+        let mesh = meshes[0]
+        mesh.physicsImpostor = new PhysicsImpostor(
+            mesh,
+            PhysicsImpostor.MeshImpostor,
+            { mass: 1, restitution: 0.1 },
+            scene
+        )
+        console.log(meshes)
+        mesh.scaling = new Vector3(0.3, 0.3, 0.3)
+        // mesh.position.z += 80
+        // mesh.rotation.y += Math.PI
+    }
+) */
 
 function makeScene(): Scene {
     const scene = new Scene(engine)
