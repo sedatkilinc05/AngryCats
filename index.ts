@@ -1,10 +1,10 @@
 import 'regenerator-runtime/runtime'
-import { scene, engine, camera, createUniversalCamera, shadowGenerator } from './src/scene'
+import { scene, engine, camera, createUniversalCamera/* , shadowGenerator */ } from './src/scene'
 import Ammo from "ammojs-typed"
-import { AmmoJSPlugin, Mesh, PhysicsImpostor, Scene, SceneLoader, Space, UniversalCamera, Vector2, Vector3 } from 'babylonjs'
+import { AmmoJSPlugin, Mesh, Scene, PointerEventTypes, UniversalCamera, Vector3, PointerInfo/* , Vector2, SceneLoader, Space, PhysicsImpostor */ } from 'babylonjs'
 import { makeGround } from "./src/ground"
 
-import { makeBox, makeCube, makeArc, makeBullet } from "./src/cube"
+import { makeBox, makeArc, makeBullet/* , makeCube */ } from "./src/cube"
 
 import { addDebugLayer } from "./src/debuglayer"
 import { canvas } from './src/domitems'
@@ -75,11 +75,11 @@ async function main(): Promise<void> {
     makeArc(-2, -20, 5, 5)
 
     makeArc(4, -20, 5, 5)
-
+/* 
     let x = 0
     let y = 2
     let z = -3
-
+ */
     let scale = 0.05
 
     let restitution = 0.1
@@ -218,15 +218,15 @@ function attachRotationControl(scene: Scene, targetRotation: Rotation) {
     let startingRotation: Rotation
 
     // Event handler
-    scene.onPointerObservable.add(function (pointerInfo) {
+    scene.onPointerObservable.add(function (pointerInfo: PointerInfo) {
         switch (pointerInfo.type) {
-            case BABYLON.PointerEventTypes.POINTERDOWN:
+            case PointerEventTypes.POINTERDOWN:
                 pointerDown();
                 break;
-            case BABYLON.PointerEventTypes.POINTERMOVE:
+            case PointerEventTypes.POINTERMOVE:
                 pointerMove();
                 break;
-            case BABYLON.PointerEventTypes.POINTERUP:
+            case PointerEventTypes.POINTERUP:
                 pointerUp();
                 break;
         }

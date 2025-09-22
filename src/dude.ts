@@ -1,7 +1,7 @@
 import { Matrix, Mesh, MeshBuilder, PhysicsImpostor, SceneLoader, Tags, TransformNode, Vector3 } from "babylonjs"
 import { scene, shadowGenerator } from "./scene"
 
-import urlDude from "./models/Dude/Dude.babylon"
+import urlDude  from "./models/Dude/Dude.babylon"
 
 let arrDudes: string[] = []
 
