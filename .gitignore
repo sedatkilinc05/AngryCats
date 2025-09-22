@@ -131,3 +131,5 @@ dist
 dist/*
 .parcel-cache
 public
+
+.DS_Store
